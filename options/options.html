@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>CRM EXT – Options</title>
+        <style>
+    /* Simple styling for clarity */
+    .message-item { margin-bottom: 10px; }
+    .message-actions button { margin-right: 5px; }
+        </style>
+        <link rel="stylesheet" href="options.css">
+    </head>
+    <body>
+        <h1>Comment Templates</h1>
+        <h2>Variables</h2>
+        <p>Proměnné, které můžete použít ve vašich šablonách (kliknutím na značku se skopíruje proměnná):</p>
+        <ul id="variables-list">
+            <!-- Variables will be rendered here -->
+        </ul>
+        <div class="message-item">
+            <input
+                id="newMessageTitle"
+                class="message-title-input"
+                placeholder="Enter your message title"
+            >
+            <textarea
+                id="newMessage"
+                placeholder="Enter your message"
+            ></textarea>
+            <br>
+            <button id="addMessage">Add Template</button>
+        </div>
+        <hr>
+        <div id="messagesList">
+            <!-- Message items will be rendered here --></div>
+        <script type="module" src="variables.js"></script>
+        <script type="module" src="options.js"></script>
+    </body>
+</html>

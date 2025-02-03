@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Poznámky Automatizace",
+  "version": "1.0",
+  "description": "Automate note creation with pre-filled messages.",
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "storage"
+  ],
+  "options_page": "options/options.html",
+  "host_permissions": [
+    "https://crm.cmzf.cz/prodej/sell-case/*",
+    "https://test.crm.cmzf.cz/prodej/sell-case/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+.note-add-btn {
+    margin-right: 10px;
+}
+
+.note-templates {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.note-templates .dropdown-menu {
+    width: 480px;
+    width:max-content;
+}
+
+.note-templates .dropdown-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.note-templates .dropdown-item p {
+    margin: 0;
+}
+
+.note-templates .dropdown-item .description {
+    padding-left: 8px;
+    color: #999;
+}
