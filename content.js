@@ -74,6 +74,11 @@ function initVariables() {
 }
 
 function insertNoteDropdownButtons(templates) {
+    if (!templates || templates.length === 0) {
+        console.error("No templates were found in the storage.");
+        console.info("Please add some templates in the extension options. (Right-click the extension icon -> Options)");
+        return;
+    }
     const noteTemplatesDropdown = templateDropdown(templates);
     buttonRow.style.display = "flex";
     buttonRow.style.justifyContent = "space-between";
@@ -112,7 +117,7 @@ function templateDropdown(options) {
 
     const dropdownMenu = document.createElement('div');
     dropdownMenu.className = "dropdown-menu dropdown-menu-right";
-
+    if(options)
     options.forEach(([title, content]) => {
         dropdownMenu.appendChild(dropdownItem(title, content));
     });
