@@ -5,10 +5,11 @@ Notes je určeno k automatizaci procesu přidávání poznámek k prodejním př
 
 ## Instalace
 <!-- Lik to github zip file -->
-
-1. Otevřete prohlížeč Chrome a přejděte na adresu `chrome://extensions/``.
-2. Přepínačem v pravém horním rohu zapněte "režim pro vývojáře".
-3. Klikněte na "Load unpacked" a vyberte složku klonovaného úložiště.
+Na stránce [releases](https://github.com/jjanousek-farmito/crm-note-templates/releases/) stáhněte nejnovější verzi rozšíření. (ZIP soubor s nejvyšším číslem verze)
+1. Rozbalte stažený ZIP soubor
+2. Otevřete prohlížeč Chrome a přejděte na adresu `chrome://extensions/`.
+3. Přepínačem v pravém horním rohu zapněte "režim pro vývojáře".
+4. Klikněte na "Load unpacked" a vyberte složku, kterou jste rozbalili ve 2. kroku.
 
 ## Použití
 1. 1. Otevřete stránku Prodejní případ v systému CRM.
