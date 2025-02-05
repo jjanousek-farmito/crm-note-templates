@@ -20,8 +20,7 @@ Na stránce [releases](https://github.com/jjanousek-farmito/crm-note-templates/r
 
 ## Přizpůsobení
 1. Přejděte na adresu `chrome://extensions/`
-2. Klikněte na tlačítko ##. 2.Najděte rozšíření Automatické poznámky k prodejním případům a klikněte na "Podrobnosti"
-3. Přejděte dolů na "Možnosti rozšíření"
-4. Otevře se stránka s možnostmi, kde můžete přidávat, upravovat nebo odstraňovat šablony poznámek
-
-Translated with DeepL.com (free version)
+2. Klikněte na tlačítko
+3. Najděte rozšíření "Poznámky Automatizace" a klikněte na "Podrobnosti" (Details)
+4. Přejděte dolů a klikněte na "Možnosti rozšíření" (Extension options)
+5. Otevře se stránka s možnostmi, kde můžete přidávat, upravovat nebo odstraňovat šablony poznámek
