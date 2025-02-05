@@ -7,11 +7,12 @@ Toto rozšíření pomáhá uživatelům šetřit čas a zajistit konzistentnost
 ## Instalace
 <!-- Lik to github zip file -->
 1. Jděte na stránku verzí: [releases](https://github.com/jjanousek-farmito/crm-note-templates/releases/)
-2. stáhněte nejnovější verzi rozšíření (první blok v seznamu, název s zeleným štítkem "Latest"), soubor "Source code.zip"
+2. stáhněte nejnovější verzi rozšíření (první blok v seznamu, název s zeleným štítkem "Latest"), soubor `Source code.zip`
 4. Rozbalte stažený ZIP soubor
 5. Otevřete prohlížeč Chrome a přejděte na adresu `chrome://extensions/`.
-6. Přepínačem v pravém horním rohu zapněte "režim pro vývojáře".
-7. Klikněte na "Load unpacked" a vyberte složku, kterou jste rozbalili ve 2. kroku.
+6. Přepínačem v pravém horním rohu zapněte "režim pro vývojáře" (Developer mode)
+8. V nové nabídce tlačítek vlevo nahoře klikněte na tlačítko "Load unpacked"
+9. Vyberte složku, kterou jste rozbalili ve 2. kroku
 
 ## Použití
 2. V pravém horním rohu sekce poznámek se zobrazí rozbalovací nabídka "Šablony" s předdefinovanými poznámkami
