@@ -1,7 +1,7 @@
 # CRN Note Templates – Chrome Extension
 
 ## Přehled
-Poznámy automatizace je rozšíření do prohlížeče Google Chrome určeno k automatizaci procesu přidávání poznámek k prodejním případům. 
+**Poznámy automatizace** je rozšíření do prohlížeče Google Chrome určeno k automatizaci procesu přidávání poznámek k prodejním případům. 
 Toto rozšíření pomáhá uživatelům šetřit čas a zajistit konzistentnost poznámek.
 
 ## Instalace
