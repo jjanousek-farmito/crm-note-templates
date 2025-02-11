@@ -1,3 +1,9 @@
+textarea#note-GENERAL {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    resize: vertical !important;
+}
+
 .note-add-btn {
     margin-right: 10px;
 }

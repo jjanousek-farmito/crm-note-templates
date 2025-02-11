@@ -1,4 +1,4 @@
-console.log("Content script loaded!");
+console.log("CMZF Extension: Content script loaded!");
 let noteSection, buttonRow, noteTextarea, variableValues, noteFormContainer, templates;
 
 initElements();
@@ -13,61 +13,80 @@ function replaceVariables(noteString) {
     });
 }
 async function loadTemplates() {
-    const data = await chrome.storage.sync.get("messages", (data) => {
+    await chrome.storage.sync.get("messages", (data) => {
         insertNoteDropdownButtons(data.messages);
     })
-
-    console.log('Templates:', templates);
-
 }
 
 function initElements() {
     noteSection = document.querySelector("#notes-general");
-    buttonRow = document.querySelector("#advert-tabs-content .container-fluid > .row:first-of-type > .col-12:first-of-type");
+    if (!noteSection) return console.error("CMZF Extension: Note section not found on the page.");
+    buttonRow = noteSection.querySelector(".container-fluid > .row:first-of-type > .col-12:first-of-type");
     noteTextarea = document.querySelector("#note-GENERAL");
     noteFormContainer = document.querySelector(".notes-new-form.d-none");
 
     if (!noteTextarea || !noteSection || !buttonRow) {
-        console.error("Some required elements were not found on the page.");
+        console.error("CMZF Extension: Some required elements were not found on the page.");
         return {}
     }
-
     return { noteTextarea, noteSection, buttonRow }
 }
 
 function initVariables() {
+    const sellCaseDataTable = document.querySelector(".table.table-striped:first-of-type");
+
     const increaseElement = document.querySelector(".navyseni-total");
     const priceElement = document.querySelector(".sell-recommendation-total");
     const pricePerSquareMeterElement = document.querySelector(".sell-recommendation-weighted-average");
-    const priceWTaxElement = document.querySelector(".sell-recommendation-total-dph");
+    //find row where title is contains "Cena s DPH / m" and get the value from the second column
+    const pricePerSquareMeterWithTaxElement = Array.from(sellCaseDataTable?.querySelectorAll("tr") ?? []).find(row => row.querySelector("td:first-of-type")?.textContent?.includes("Cena s DPH / m"))?.querySelector("td:last-of-type .badge")
+    const priceWithTaxElement = document.querySelector(".sell-recommendation-total-dph");
     const primaryStateButton = document.querySelector('nav + .container-fluid div div form:first-of-type .btn');
 
+
     // Ensure all elements are found before proceeding
-    if (!increaseElement || !priceElement || !noteSection || !buttonRow || !noteTextarea) {
-        console.error("Some required elements were not found on the page.");
+    if (!increaseElement || !priceElement || !priceWithTaxElement || !pricePerSquareMeterElement || !pricePerSquareMeterWithTaxElement || !primaryStateButton) {
+        console.error("CMZF Extension: Some required elements were not found on the page.");
         return {}
     }
 
     // Extract the data we need
-    const increasePercentage = parseFloat(increaseElement.textContent?.trim()).toFixed(2);
-    const priceWithoutTax = parseFloat(priceElement.textContent?.trim()).toFixed(2);
-    const priceWithTax = parseFloat(priceWTaxElement?.textContent?.trim()).toFixed(2);
-    const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement?.textContent?.trim()).toFixed(2);
-    const stateButtonText = parseFloat(primaryStateButton?.textContent?.trim()).toFixed(2);
+    const increasePercentage = parseFloat(increaseElement.textContent).toFixed(2)?.replace(".", ",") + "%";
+    const price = priceElement.textContent?.trim().replace(".", ",");
+    const priceWithTax = priceWithTaxElement.textContent?.trim().replace(".", ",")
+    const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement.textContent).toFixed(2)?.trim().replace(".", ",") + "/m2";
+    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement.textContent?.trim().replace(".", ",");
     let reAdvertIndex = "XXX";
-    if (primaryStateButton) {
-        //get re-advert index from the button text "pre-advert state R5" || "Another re-advert state 5"
-        const reAdvertButtonIndex = stateButtonText?.match(/R?(\d+)/i);
-        if (reAdvertButtonIndex?.[1]) reAdvertIndex = reAdvertButtonIndex[1];
+    const area = document.querySelector(".area-total")?.textContent?.trim() + " m2";
+
+
+    const stateButtonText = primaryStateButton?.textContent?.trim()
+    const reAdvertButtonIndexMatch = stateButtonText?.match(/R?(\d+)/);
+    const buttonReadvertIndex = reAdvertButtonIndexMatch?.[1];
+    //get re-advert index from the status text "Reinzerováno 4"
+    const status = sellCaseDataTable?.querySelector("tr:first-of-type td:last-of-type")?.textContent?.trim();
+    //get the number from the status text "Reinzerováno 4" and increment it by 1, if it's not found, set it to "XXX"
+    if (buttonReadvertIndex) {
+        //if the button has the re-advert index, use it
+        reAdvertIndex = buttonReadvertIndex;
+
+    } else if (status?.includes("Reinzerováno") && status?.match(/(\d+)/)?.[1]) {
+        //get the number from the status text "Reinzerováno 4" and increment it by 1, if it's not found, set it to "XXX"
+        reAdvertIndex = (parseInt(status.match(/(\d+)/)?.[1] ?? "0") + 1).toString()
+    } else {
+        console.error("CMZF Extension: Re-advert index not found on the page.");
     }
+
 
     // Store the values in an object
     variableValues = {
         "navyseni": increasePercentage,
-        "cena_bez_dph": priceWithoutTax,
-        "cena_s_dph": priceWithTax,
-        "cena_za_metr": pricePerSquareMeter,
-        "reinzerce_inedx": reAdvertIndex
+        "cena": price,
+        "cena_dph": priceWithTax,
+        "cena_metr": pricePerSquareMeter,
+        "cena_metr_dph": pricePerSquareMeterWithTax,
+        "reinzerce_index": reAdvertIndex,
+        "vymera": area,
     };
 
     return variableValues
@@ -75,8 +94,8 @@ function initVariables() {
 
 function insertNoteDropdownButtons(templates) {
     if (!templates || templates.length === 0) {
-        console.error("No templates were found in the storage.");
-        console.info("Please add some templates in the extension options. (Right-click the extension icon -> Options)");
+        console.error("CMZF Extension: No templates were found in the storage.");
+        console.info("CMZF Extension: Please add some templates in the extension options. (Right-click the extension icon -> Options)");
         return;
     }
     const noteTemplatesDropdown = templateDropdown(templates);
@@ -99,7 +118,7 @@ function templateDropdown(options) {
         item.className = "dropdown-item";
         item.onclick = () => appendTemplateToNote(content);
         item.innerHTML = `<span class="title">${title}</span>`;
-            // <span class="description">${content}</span>
+        // <span class="description">${content}</span>
         return item;
     }
 
@@ -117,10 +136,10 @@ function templateDropdown(options) {
 
     const dropdownMenu = document.createElement('div');
     dropdownMenu.className = "dropdown-menu dropdown-menu-right";
-    if(options)
-    options.forEach(([title, content]) => {
-        dropdownMenu.appendChild(dropdownItem(title, content));
-    });
+    if (options)
+        options.forEach(([title, content]) => {
+            dropdownMenu.appendChild(dropdownItem(title, content));
+        });
 
     dropdown.appendChild(dropdownButton);
     dropdown.appendChild(dropdownMenu);
