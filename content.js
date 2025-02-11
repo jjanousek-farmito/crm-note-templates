@@ -8,10 +8,11 @@ loadTemplates();
 
 
 function replaceVariables(noteString) {
-    return noteString.replace(/{{(.*?)}}/g, (match, variable) => {
+    return noteString.replace(/{{(.*)}}/g, (match, variable) => {
         return variableValues?.[variable] ?? match;
     });
 }
+
 async function loadTemplates() {
     await chrome.storage.sync.get("messages", (data) => {
         insertNoteDropdownButtons(data.messages);
@@ -52,12 +53,12 @@ function initVariables() {
 
     // Extract the data we need
     const increasePercentage = parseFloat(increaseElement.textContent).toFixed(2)?.replace(".", ",") + "%";
-    const price = priceElement.textContent?.trim().replace(".", ",");
-    const priceWithTax = priceWithTaxElement.textContent?.trim().replace(".", ",")
-    const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement.textContent).toFixed(2)?.trim().replace(".", ",") + "/m2";
-    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement.textContent?.trim().replace(".", ",");
+    const price = priceElement.textContent
+    const priceWithTax = priceWithTaxElement.textContent
+    const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement.textContent).toFixed(2)?.replace(".", ",") + " Kč/m2";
+    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement.textContent?.trim().replace(".", ",")
     let reAdvertIndex = "XXX";
-    const area = document.querySelector(".area-total")?.textContent?.trim() + " m2";
+    const area = document.querySelector(".area-total")?.textContent?.trim().replace(".", ",");
 
 
     const stateButtonText = primaryStateButton?.textContent?.trim()
@@ -86,7 +87,7 @@ function initVariables() {
         "cena_metr": pricePerSquareMeter,
         "cena_metr_dph": pricePerSquareMeterWithTax,
         "reinzerce_index": reAdvertIndex,
-        "vymera": area,
+        "vymera": area
     };
 
     return variableValues
