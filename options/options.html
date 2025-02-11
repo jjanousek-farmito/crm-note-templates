@@ -11,7 +11,10 @@
         <link rel="stylesheet" href="options.css">
     </head>
     <body>
+        <div class="notifications"></div>
         <h1>Comment Templates</h1>
+        <button id="import">Import</button>
+        <button id="export">Export</button>
         <h2>Variables</h2>
         <p>Proměnné, které můžete použít ve vašich šablonách (kliknutím na značku se skopíruje proměnná):</p>
         <ul id="variables-list">
@@ -33,7 +36,32 @@
         <hr>
         <div id="messagesList">
             <!-- Message items will be rendered here --></div>
-        <script type="module" src="variables.js"></script>
+        <script type="module" src="notification.js"></script>
         <script type="module" src="options.js"></script>
+        <script type="module" src="importExport.js"></script>
+
+        <dialog id="importDialog">
+            <form id="importForm">
+                <textarea
+                    id="importTextarea"
+                    placeholder="Paste your JSON here"
+                ></textarea>
+                <br>
+                <button id="importSubmit">Save</button>
+                <button id="importCancel">Cancel</button>
+            </form>
+        </dialog>
+
+        <dialog id="exportDialog">
+            <form id="exportForm">
+                <textarea
+                    id="exportTextarea"
+                    readonly
+                ></textarea>
+                <br>
+                <button id="exportSubmit">Load</button>
+                <button id="exportCancel">Close</button>
+            </form>
+        </dialog>
     </body>
 </html>

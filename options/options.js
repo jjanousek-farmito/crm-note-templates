@@ -1,8 +1,7 @@
 import { variables } from './../variables.js';
+import { Notification } from './notification.js';
 
 const variablesList = document.getElementById('variables-list');
-
-console.log('Variables:', variables)
 
 variables.forEach(([name, variableName, description]) => {
     const variableItem = document.createElement('li');
@@ -25,6 +24,7 @@ variables.forEach(([name, variableName, description]) => {
 
             //copy the variable to the clipboard
             copyContent(variable);
+            new Notification(`Copied ${variable} to clipboard`);
         });
     };
 
@@ -43,20 +43,20 @@ async function copyContent(text) {
 }
 
 // Utility function to get messages from storage
-function getMessages(callback) {
+export function getMessages(callback) {
     chrome.storage.sync.get({ messages: [] }, (data) => {
         callback(data.messages);
     });
 }
 
 // Utility function to save messages to storage
-function saveMessages(messages, callback) {
+export function saveMessages(messages, callback) {
     chrome.storage.sync.set({ messages }, callback);
 }
 
 
 // Render the messages list
-function renderMessages() {
+export function renderMessages() {
     const listDiv = document.getElementById('messagesList');
     listDiv.innerHTML = ''; // Clear current list
 
@@ -80,6 +80,9 @@ function renderMessages() {
 
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'message-actions';
+            actionsDiv.style.display = 'flex';
+            actionsDiv.style.justifyContent = 'flex-start';
+            actionsDiv.style.gap = '.5rem';
 
             const messageEditTextarea = document.createElement('textarea');
             messageEditTextarea.value = content;
@@ -96,7 +99,8 @@ function renderMessages() {
                 messageEditTextarea.style.display = 'block';
 
                 editBtn.style.display = 'none';
-                saveBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'block';
+                cancelBtn.style.display = 'block';
 
                 messageEditTextarea.value = content;
                 messageEditTextarea.focus();
@@ -119,6 +123,23 @@ function renderMessages() {
                 }
             })
 
+            // Cancel buttonß
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.style.display = 'none';
+            cancelBtn.addEventListener('click', () => {
+                messageTitle.style.display = 'block';
+                messageTitleInput.style.display = 'none';
+
+                messageText.style.display = 'block';
+                messageEditTextarea.style.display = 'none';
+
+                editBtn.style.display = 'block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+
+            });
+
             // Delete button
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Delete';
@@ -137,6 +158,7 @@ function renderMessages() {
             actionsDiv.appendChild(editBtn);
             actionsDiv.appendChild(saveBtn);
             actionsDiv.appendChild(deleteBtn);
+            actionsDiv.appendChild(cancelBtn);
 
             messageDiv.appendChild(actionsDiv);
             listDiv.appendChild(messageDiv);
