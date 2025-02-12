@@ -50,7 +50,6 @@ function initVariables() {
     // Ensure all elements are found before proceeding
     if (!increaseElement || !priceElement || !priceWithTaxElement || !pricePerSquareMeterElement || !pricePerSquareMeterWithTaxElement || !primaryStateButton) {
         console.error("CMZF Extension: Some required elements were not found on the page.");
-        return {}
     }
 
     // Extract the data we need
