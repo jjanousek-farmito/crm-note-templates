@@ -53,13 +53,13 @@ function initVariables() {
     }
 
     // Extract the data we need
-    const increasePercentage = parseFloat(increaseElement.textContent).toFixed(2)?.replace(".", ",") + "%";
-    const price = priceElement.textContent
-    const priceWithTax = priceWithTaxElement.textContent
-    const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement.textContent).toFixed(2)?.replace(".", ",") + " Kč/m2";
-    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement.textContent?.trim().replace(".", ",")
+    const increasePercentage = parseFloat(increaseElement?.textContent ?? "0")?.toFixed(2)?.replace(".", ",") + "%";
+    const price = priceElement?.textContent
+    const priceWithTax = priceWithTaxElement?.textContent
+    const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement?.textContent ?? "0")?.toFixed(2)?.replace(".", ",") + " Kč/m2";
+    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement?.textContent?.trim()?.replace(".", ",")
     let reAdvertIndex = "XXX";
-    const area = document.querySelector(".area-total")?.textContent?.trim().replace(".", ",");
+    const area = document.querySelector(".area-total")?.textContent?.trim()?.replace(".", ",");
 
 
     const stateButtonText = primaryStateButton?.textContent?.trim()
