@@ -8,7 +8,6 @@ loadTemplates();
 
 
 function replaceVariables(noteString) {
-    console.log("CMZF Extension: Replacing variables in the note template.");
     return noteString.replaceAll(/{{(.+?)}}/g, (match, variable) => {
         const replace = variableValues?.[variable] ?? `{{${variable}}}`;
 
