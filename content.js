@@ -8,8 +8,11 @@ loadTemplates();
 
 
 function replaceVariables(noteString) {
-    return noteString.replace(/{{(.*)}}/g, (match, variable) => {
-        return variableValues?.[variable] ?? match;
+    console.log("CMZF Extension: Replacing variables in the note template.");
+    return noteString.replaceAll(/{{(.+?)}}/g, (match, variable) => {
+        const replace = variableValues?.[variable] ?? `{{${variable}}}`;
+
+        return replace
     });
 }
 
@@ -75,7 +78,7 @@ function initVariables() {
         //get the number from the status text "Reinzerováno 4" and increment it by 1, if it's not found, set it to "XXX"
         reAdvertIndex = (parseInt(status.match(/(\d+)/)?.[1] ?? "0") + 1).toString()
     } else {
-        console.error("CMZF Extension: Re-advert index not found on the page.");
+        console.info("CMZF Extension: Re-advert index not found on the page.");
     }
 
 
