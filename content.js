@@ -42,7 +42,7 @@ function initVariables() {
     const priceElement = document.querySelector(".sell-recommendation-total");
     const pricePerSquareMeterElement = document.querySelector(".sell-recommendation-weighted-average");
     //find row where title is contains "Cena s DPH / m" and get the value from the second column
-    const pricePerSquareMeterWithTaxElement = Array.from(sellCaseDataTable?.querySelectorAll("tr") ?? []).find(row => row.querySelector("td:first-of-type")?.textContent?.includes("Cena s DPH / m"))?.querySelector("td:last-of-type .badge")
+    const pricePerSquareMeterWithTaxElement = Array.from(document.querySelectorAll(".container-fluid table.table.table-striped tr")).find(row => row.querySelector("td:first-of-type")?.textContent?.includes("Cena s DPH"))?.querySelector("td:last-of-type span.badge span");
     const priceWithTaxElement = document.querySelector(".sell-recommendation-total-dph");
     const primaryStateButton = document.querySelector('nav + .container-fluid div div form:first-of-type .btn');
 
@@ -57,7 +57,7 @@ function initVariables() {
     const price = priceElement?.textContent
     const priceWithTax = priceWithTaxElement?.textContent
     const pricePerSquareMeter = parseFloat(pricePerSquareMeterElement?.textContent ?? "0")?.toFixed(2)?.replace(".", ",") + " Kč/m2";
-    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement?.textContent?.trim()?.replace(".", ",")
+    const pricePerSquareMeterWithTax = pricePerSquareMeterWithTaxElement?.textContent?.trim()?.replace(".", ",").split(" ")[0] + " Kč/m2";
     let reAdvertIndex = "XXX";
     const area = document.querySelector(".area-total")?.textContent?.trim()?.replace(".", ",");
 
