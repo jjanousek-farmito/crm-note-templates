@@ -1,10 +1,35 @@
 console.log("CMZF Extension: Content script loaded!");
-let noteSection, buttonRow, noteTextarea, variableValues, noteFormContainer, templates;
+let notesSection, buttonRows, variableValues, templates;
 
 initElements();
 initVariables();
 loadTemplates();
-// insertNoteDropdownButtons();
+markNotesTabs();
+
+function markNotesTabs() {
+    const noteTabsContainer = document.querySelector("#general ul.nav-tabs");
+    const notesTabs = noteTabsContainer.querySelectorAll(".nav-item");
+    const notesSections = document.querySelectorAll("#general .tab-pane[id^='notes-']");
+    notesTabs.forEach((tab, index) => {
+        // if notes section has some notes, mark the tab
+        // .table-responsive has some tr in tbody, which is not class="text-center"
+
+        const notesSection = notesSections[index];
+        const notes = notesSection.querySelectorAll("tbody tr:has(td:not(.text-center))");
+        console.log(notes);
+
+        const notesCount = notes.length;
+
+        // if notes count is greater than 0, mark the tab with fa fa-comment
+        // <i class="fa fa-comments" aria-hidden="true"></i>
+        if (notesCount > 0) {
+            const icon = document.createElement("i");
+            icon.classList.add("fa", "fa-comments", "ml-2")
+            icon.setAttribute("aria-hidden", "true");
+            tab.querySelector("a").appendChild(icon);
+        }
+    });
+}
 
 
 function replaceVariables(noteString) {
@@ -22,17 +47,13 @@ async function loadTemplates() {
 }
 
 function initElements() {
-    noteSection = document.querySelector("#notes-general");
-    if (!noteSection) return console.error("CMZF Extension: Note section not found on the page.");
-    buttonRow = noteSection.querySelector(".container-fluid > .row:first-of-type > .col-12:first-of-type");
-    noteTextarea = document.querySelector("#note-GENERAL");
-    noteFormContainer = document.querySelector(".notes-new-form.d-none");
+    notesSection = document.querySelector("#general .container-fluid");
+    if (!notesSection) return console.error("CMZF Extension: Note section not found on the page.");
+    buttonRows = notesSection.querySelectorAll("div[id^='notes-'] .col-12:first-of-type");
 
-    if (!noteTextarea || !noteSection || !buttonRow) {
+    if (!notesSection || !buttonRows) {
         console.error("CMZF Extension: Some required elements were not found on the page.");
-        return {}
     }
-    return { noteTextarea, noteSection, buttonRow }
 }
 
 function initVariables() {
@@ -100,16 +121,31 @@ function insertNoteDropdownButtons(templates) {
         console.info("CMZF Extension: Please add some templates in the extension options. (Right-click the extension icon -> Options)");
         return;
     }
-    const noteTemplatesDropdown = templateDropdown(templates);
-    buttonRow.style.display = "flex";
-    buttonRow.style.justifyContent = "space-between";
-    buttonRow.appendChild(noteTemplatesDropdown);
+
+    buttonRows.forEach((buttonRow) => {
+        const noteTemplatesDropdown = templateDropdown(templates);
+        buttonRow.style.display = "flex";
+        buttonRow.style.justifyContent = "space-between";
+        buttonRow.appendChild(noteTemplatesDropdown);
+    });
 }
 
 function appendTemplateToNote(template) {
-    noteTextarea.value = replaceVariables(template);
-    noteTextarea.dispatchEvent(new Event("input"));
-    noteFormContainer.classList.remove("d-none");
+    let activeNotes = document.querySelector("#general .tab-pane.active.show");
+    let visibleNoteTextarea = activeNotes?.querySelector("textarea");
+    let noteFormContainer = activeNotes?.querySelector("form.form.notes-new-form.d-none");
+    console.log(visibleNoteTextarea);
+    console.log(template);
+
+    if (!visibleNoteTextarea) {
+        console.error("CMZF Extension: Note textarea not found.");
+        return;
+    }
+
+    visibleNoteTextarea.value = replaceVariables(template);
+    visibleNoteTextarea.dispatchEvent(new Event("input"));
+
+    noteFormContainer?.classList.remove("d-none");
 }
 
 
