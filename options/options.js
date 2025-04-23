@@ -16,7 +16,7 @@ variables.forEach(([name, variableName, description]) => {
     variableItem.appendChild(variableNameElement);
     variableItem.appendChild(variableDescriptionElement);
 
-    variablesList.appendChild(variableItem);
+    variablesList?.appendChild(variableItem);
 
     const copyTextContent = (code) => {
         code.addEventListener('click', () => {
@@ -38,7 +38,7 @@ async function copyContent(text) {
         await navigator.clipboard.writeText(text);
         console.log('Content copied to clipboard');
     } catch (err) {
-        console.error('Failed to copy: ', err);
+        console.info('Failed to copy: ', err);
     }
 }
 
@@ -58,6 +58,10 @@ export function saveMessages(messages, callback) {
 // Render the messages list
 export function renderMessages() {
     const listDiv = document.getElementById('messagesList');
+    if (!listDiv) {
+        console.info('Messages list element not found');
+        return;
+    }
     listDiv.innerHTML = ''; // Clear current list
 
     getMessages((messages) => {
